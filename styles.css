@@ -445,37 +445,37 @@ body.intro-open { overflow: hidden; }
 .intro[hidden] { display: none; }
 .intro.leaving { opacity: 0; pointer-events: none; }
 
-.stars {
+/* Background: looping lighthouse video, darkened a little behind the text */
+.intro-bg {
   position: absolute;
-  inset: 0 0 40% 0;
-  opacity: 0.7;
-  background-image:
-    radial-gradient(1.5px 1.5px at 8% 22%, #EFE8DA 50%, transparent 100%),
-    radial-gradient(1px 1px at 18% 8%, #EFE8DA 50%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 31% 30%, #EFE8DA 50%, transparent 100%),
-    radial-gradient(1px 1px at 44% 12%, #EFE8DA 50%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 57% 26%, #EFE8DA 50%, transparent 100%),
-    radial-gradient(1px 1px at 66% 6%, #EFE8DA 50%, transparent 100%),
-    radial-gradient(1px 1px at 74% 38%, #EFE8DA 50%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 92% 30%, #EFE8DA 50%, transparent 100%),
-    radial-gradient(1px 1px at 96% 10%, #EFE8DA 50%, transparent 100%),
-    radial-gradient(1px 1px at 51% 48%, #EFE8DA 50%, transparent 100%);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.moon {
+.intro-shade {
   position: absolute;
-  top: 10%;
-  right: 12%;
-  width: clamp(56px, 8vw, 96px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: #E9C979;
-  box-shadow: 0 0 70px 12px rgba(217, 164, 65, 0.22);
+  inset: 0;
+  background: linear-gradient(to right, rgba(6, 12, 18, 0.75) 0%, rgba(6, 12, 18, 0.35) 50%, rgba(6, 12, 18, 0) 75%);
 }
 
-@media (max-width: 600px) {
-  .moon { top: auto; bottom: 300px; right: 14%; }
+.sound-toggle {
+  position: absolute;
+  z-index: 5;
+  top: 16px;
+  right: 16px;
+  padding: 6px 14px;
+  border: 1px solid rgba(239, 232, 218, 0.35);
+  border-radius: 999px;
+  background: rgba(15, 18, 22, 0.5);
+  color: var(--text);
+  font: 13px var(--sans);
+  cursor: pointer;
 }
+
+.sound-toggle:hover { border-color: var(--text); }
+.sound-toggle:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
 
 .intro-text {
   position: relative;
@@ -510,7 +510,10 @@ body.intro-open { overflow: hidden; }
 }
 
 .btn-primary {
-  padding: 14px 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 30px 10px 14px;
   border: 0;
   border-radius: 999px;
   background: var(--accent);
@@ -520,6 +523,17 @@ body.intro-open { overflow: hidden; }
 }
 
 .btn-primary:hover { filter: brightness(1.08); }
+
+.btn-primary .wheel {
+  width: 28px;
+  height: 28px;
+  transition: transform 0.6s ease;
+}
+
+.btn-primary:hover .wheel { transform: rotate(90deg); }
+.intro.sailing .btn-primary .wheel { animation: spin 1.2s linear infinite; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .btn-link {
   padding: 8px 0;
@@ -539,9 +553,9 @@ body.intro-open { overflow: hidden; }
 .ship-wrap {
   position: absolute;
   z-index: 2;
-  left: 50%;
-  bottom: 56px;
-  width: clamp(200px, 30vw, 340px);
+  left: 70%;
+  bottom: 24px;
+  width: clamp(240px, 38vw, 520px);
   transform: translateX(-50%);
   transition: transform 2.2s cubic-bezier(0.55, 0, 0.8, 0.3);
 }
@@ -554,6 +568,7 @@ body.intro-open { overflow: hidden; }
   height: auto;
   overflow: visible;
   transform-origin: 50% 85%;
+  filter: brightness(0.8) drop-shadow(0 10px 18px rgba(0, 0, 0, 0.5));
   animation: bob 4s ease-in-out infinite;
 }
 
@@ -583,30 +598,12 @@ body.intro-open { overflow: hidden; }
   to   { background-position-x: -320px; }
 }
 
-.wave-back {
-  z-index: 1;
-  height: 150px;
-  background: #1B2A2E;
-  --speed: 16s;
-  --crest: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 32'%3E%3Cpath d='M0 20 Q40 4 80 20 T160 20 T240 20 T320 20 V32 H0 Z' fill='%231B2A2E'/%3E%3C/svg%3E");
-}
-
-.wave-mid {
-  z-index: 1;
-  height: 104px;
-  background: #213439;
-  --speed: 11s;
-  --crest: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 32'%3E%3Cpath d='M0 20 Q40 4 80 20 T160 20 T240 20 T320 20 V32 H0 Z' fill='%23213439'/%3E%3C/svg%3E");
-}
-
-.wave-mid::before { animation-direction: reverse; }
-
 .wave-front {
   z-index: 3;
-  height: 62px;
-  background: #284249;
+  height: 46px;
+  background: #06222C;
   --speed: 7s;
-  --crest: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 32'%3E%3Cpath d='M0 20 Q40 4 80 20 T160 20 T240 20 T320 20 V32 H0 Z' fill='%23284249'/%3E%3C/svg%3E");
+  --crest: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 32'%3E%3Cpath d='M0 20 Q40 4 80 20 T160 20 T240 20 T320 20 V32 H0 Z' fill='%2306222C'/%3E%3C/svg%3E");
 }
 
 /* ---------- Small ship that sails on the map ---------- */

@@ -40,25 +40,31 @@
 
   <!-- INTRO: a ship at sea. "Set sail" sends it off, then it sails into Melaka on the map -->
   <section id="intro" class="intro" aria-labelledby="intro-title">
-    <div class="stars"></div>
-    <div class="moon"></div>
+    <video class="intro-bg" src="Assets/vecteezy_lighthouse-beam-sweeping-over-night-ocean_87753395.mp4"
+           autoplay muted loop playsinline aria-hidden="true"></video>
+    <div class="intro-shade"></div>
+
+    <audio id="sfx-waves" src="Assets/audiovisuaiseu-ocean-waves-250310.mp3" loop preload="auto"></audio>
+    <audio id="sfx-flute" src="Assets/leberch-flute-587281.mp3" loop preload="auto"></audio>
+    <button id="sound-toggle" class="sound-toggle" type="button" aria-pressed="false">Sound off</button>
 
     <div class="intro-text">
       <p class="eyebrow">1500 · The Strait of Melaka</p>
       <h1 id="intro-title" class="intro-title">Penjajahan</h1>
       <p class="intro-lede">In 1511, Portuguese ships sailed into Melaka. Over the next 450 years, foreign powers took the land piece by piece, until Merdeka.</p>
       <div class="intro-actions">
-        <button id="set-sail" class="btn-primary" type="button">Set sail</button>
+        <button id="set-sail" class="btn-primary" type="button">
+          <img class="wheel" src="Assets/ship-wheel.png" alt="" width="28" height="28">
+          Set sail
+        </button>
         <button id="skip-intro" class="btn-link" type="button">Skip intro</button>
       </div>
     </div>
 
     <div class="ship-wrap">
-      <svg class="ship" viewBox="0 0 240 180" aria-hidden="true"><use href="#ship" width="240" height="180"/></svg>
+      <img class="ship" src="Assets/ship.png" alt="" width="1200" height="858">
     </div>
 
-    <div class="wave wave-back"></div>
-    <div class="wave wave-mid"></div>
     <div class="wave wave-front"></div>
   </section>
 
