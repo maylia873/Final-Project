@@ -28,6 +28,31 @@ function ringToPath(ring) {
   }).join(' ') + ' Z';
 }
 
+// ---------- Slider scale ----------
+// The key moments are spread evenly along the slider, so a long era (like the
+// 130 Portuguese years) takes the same room as a short one. Between two stops
+// the years run evenly. Slider positions go from 0 to SLIDER_MAX.
+const SLIDER_MAX = 1000;
+const STOPS = [MIN_YEAR, ...KEY_MOMENTS.map(m => m.year).filter(y => y > MIN_YEAR)];
+if (STOPS[STOPS.length - 1] < MAX_YEAR) STOPS.push(MAX_YEAR);
+const SEGMENT = SLIDER_MAX / (STOPS.length - 1);
+
+function yearToPos(y) {
+  for (let i = 1; i < STOPS.length; i++) {
+    if (y <= STOPS[i]) {
+      const t = (y - STOPS[i - 1]) / (STOPS[i] - STOPS[i - 1]);
+      return (i - 1 + Math.max(0, t)) * SEGMENT;
+    }
+  }
+  return SLIDER_MAX;
+}
+
+function posToYear(pos) {
+  const i = Math.min(Math.floor(pos / SEGMENT), STOPS.length - 2);
+  const t = (pos - i * SEGMENT) / SEGMENT;
+  return Math.round(STOPS[i] + t * (STOPS[i + 1] - STOPS[i]));
+}
+
 // ---------- Page elements ----------
 const svg = document.getElementById('map');
 const slider = document.getElementById('slider');
@@ -157,7 +182,7 @@ function buildTicks() {
     btn.type = 'button';
     btn.className = 'tick';
     btn.dataset.year = m.year;
-    btn.style.left = ((m.year - MIN_YEAR) / (MAX_YEAR - MIN_YEAR) * 100) + '%';
+    btn.style.left = (yearToPos(m.year) / SLIDER_MAX * 100) + '%';
     btn.title = `${m.year}: ${m.text}`;
     btn.setAttribute('aria-label', `Jump to ${m.year}: ${m.text}`);
     btn.addEventListener('click', () => { stopPlay(); cancelVoyage(); setYear(m.year); });
@@ -168,8 +193,11 @@ function buildTicks() {
 // ---------- Update everything for the current year ----------
 function render() {
   yearEl.textContent = year;
-  slider.value = year;
-  slider.style.setProperty('--p', ((year - MIN_YEAR) / (MAX_YEAR - MIN_YEAR) * 100) + '%');
+  // While playing, keep the exact position so the thumb glides smoothly
+  const pos = playTimer ? playPos : yearToPos(year);
+  slider.value = pos;
+  slider.setAttribute('aria-valuetext', String(year));
+  slider.style.setProperty('--p', (pos / SLIDER_MAX * 100) + '%');
 
   const present = new Set();
 
@@ -334,16 +362,21 @@ function setYear(y) {
   render();
 }
 
-slider.addEventListener('input', () => { stopPlay(); cancelVoyage(); setYear(Number(slider.value)); });
+slider.addEventListener('input', () => { stopPlay(); cancelVoyage(); setYear(posToYear(Number(slider.value))); });
+
+// Play moves along the slider at a steady speed, so each era gets equal time
+let playPos = 0;
 
 function startPlay() {
   cancelVoyage();
   if (year >= MAX_YEAR) setYear(MIN_YEAR);
+  playPos = yearToPos(year);
   playBtn.textContent = '❚❚';
   playBtn.setAttribute('aria-label', 'Pause');
   playTimer = setInterval(() => {
-    if (year >= MAX_YEAR) { stopPlay(); return; }
-    setYear(year + 2);
+    if (playPos >= SLIDER_MAX) { stopPlay(); render(); return; }
+    playPos = Math.min(SLIDER_MAX, playPos + 4);
+    setYear(posToYear(playPos));
   }, 70);
 }
 
