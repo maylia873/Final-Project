@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malaysia's History of Colonialism</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Ship drawing, reused by the intro and by the map -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="ship" viewBox="0 0 240 180">
+      <!-- mirrored so the ship faces right, the way it sails -->
+      <g transform="translate(240 0) scale(-1 1)">
+      <g fill="#3B2A1C">
+        <rect x="76" y="30" width="4" height="96"/>
+        <rect x="130" y="12" width="5" height="114"/>
+        <rect x="180" y="44" width="4" height="82"/>
+      </g>
+      <line x1="200" y1="116" x2="236" y2="94" stroke="#3B2A1C" stroke-width="3" stroke-linecap="round"/>
+      <path d="M132 14 L232 96 M132 14 L22 106 M78 32 L22 106" stroke="#5C4632" stroke-width="1" fill="none"/>
+      <path d="M78 34 L52 100 L104 96 Z" fill="#E2D6BD"/>
+      <path d="M110 22 Q132 27 155 22 L157 36 Q132 42 108 36 Z" fill="#EDE3CF"/>
+      <path d="M104 42 Q132 49 161 42 L165 90 Q132 101 100 90 Z" fill="#EDE3CF"/>
+      <path d="M164 52 Q182 57 200 52 L203 92 Q182 101 161 92 Z" fill="#EDE3CF"/>
+      <path d="M135 12 L158 17 L135 22 Z" fill="#B5402F"/>
+      <path d="M10 104 L60 104 L64 118 L194 118 L198 108 L228 106 L214 146 Q128 162 38 148 Z" fill="#6B4A2E"/>
+      <path d="M22 128 Q120 136 220 124" stroke="#D9A441" stroke-width="3" fill="none"/>
+      <g fill="#3B2A1C">
+        <circle cx="70" cy="136" r="3"/><circle cx="100" cy="138" r="3"/>
+        <circle cx="130" cy="138" r="3"/><circle cx="160" cy="136" r="3"/>
+      </g>
+      </g>
+    </symbol>
+  </svg>
+
+  <!-- INTRO: a ship at sea. "Set sail" sends it off, then it sails into Melaka on the map -->
+  <section id="intro" class="intro" aria-labelledby="intro-title">
+    <div class="stars"></div>
+    <div class="moon"></div>
+
+    <div class="intro-text">
+      <p class="eyebrow">1500 · The Strait of Melaka</p>
+      <h1 id="intro-title" class="intro-title">Penjajahan</h1>
+      <p class="intro-lede">In 1511, Portuguese ships sailed into Melaka. Over the next 450 years, foreign powers took the land piece by piece, until Merdeka.</p>
+      <div class="intro-actions">
+        <button id="set-sail" class="btn-primary" type="button">Set sail</button>
+        <button id="skip-intro" class="btn-link" type="button">Skip intro</button>
+      </div>
+    </div>
+
+    <div class="ship-wrap">
+      <svg class="ship" viewBox="0 0 240 180" aria-hidden="true"><use href="#ship" width="240" height="180"/></svg>
+    </div>
+
+    <div class="wave wave-back"></div>
+    <div class="wave wave-mid"></div>
+    <div class="wave wave-front"></div>
+  </section>
+
+  <main class="layout">
+    <!-- MAP -->
+    <section class="map-card" aria-label="Interactive map of who ruled each state">
+      <div class="map-top">
+        <div class="year-display">
+          <span class="year-label">Year</span>
+          <span id="year" class="year">1500</span>
+        </div>
+        <ul id="legend" class="legend" aria-label="Legend"></ul>
+      </div>
+
+      <!-- The map is drawn here by script.js -->
+      <svg id="map" role="group" aria-label="Map of Malaysia's states"></svg>
+      <div id="tooltip" class="tooltip" hidden></div>
+
+      <!-- TIME SLIDER -->
+      <div class="timeline">
+        <button id="play" class="play" type="button" aria-label="Play through time">▶</button>
+        <div class="slider-wrap">
+          <input id="slider" type="range" min="1500" max="1963" step="1" value="1500" aria-label="Year">
+          <div id="ticks" class="ticks"></div>
+          <div class="slider-ends"><span>1500</span><span>1963</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INFO PANEL: overview, or the story of the state you clicked -->
+    <aside id="panel" class="panel"></aside>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+  <script src="intro.js"></script>
+</body>
+</html>

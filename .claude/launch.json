@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "site",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "C:/Users/amyra/AppData/Local/Temp/claude/47bf00c4ab78f077/98c92888-3a7e-4f5a-b458-489f55215113/scratchpad/serve.ps1", "-Root", "C:/Users/amyra/OneDrive/Documents/Ux_media_design/Final Project", "-Port", "5502"],
+      "port": 5502
+    }
+  ]
+}
